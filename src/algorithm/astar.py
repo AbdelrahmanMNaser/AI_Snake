@@ -3,9 +3,12 @@ from queue import PriorityQueue
 class AStar:
     def find_path(self, start_node, goal_node):
         """Implement A* search algorithm using priority queue"""
+        # Set goal coordinates for heuristic calculation
+        start_node.set_goal(goal_node)
+        
         open_set = PriorityQueue()
         open_set.put((0, start_node))
-        open_set_hash = {start_node} 
+        open_set_hash = {start_node}
         
         closed_set = set()
         g_scores = {start_node: 0}
@@ -13,7 +16,7 @@ class AStar:
         f_scores = {start_node: start_node.get_heuristic()}
         
         while not open_set.empty():
-            current = open_set.get()[1]  # Get node with minimum f_score
+            current = open_set.get()[1]
             open_set_hash.remove(current)
             
             if current == goal_node:
@@ -24,12 +27,12 @@ class AStar:
             for neighbor, edge in current.get_neighbor_data():
                 if neighbor in closed_set:
                     continue
-                    
+                
+                neighbor.set_goal(goal_node)  # Set goal for heuristic
                 tentative_g = g_scores[current] + edge.cost
                 
                 if neighbor not in open_set_hash:
                     open_set_hash.add(neighbor)
-                    # Add to priority queue with f_score as priority
                     f_score = tentative_g + neighbor.get_heuristic()
                     open_set.put((f_score, neighbor))
                 elif tentative_g >= g_scores.get(neighbor, float('inf')):
@@ -39,8 +42,7 @@ class AStar:
                 g_scores[neighbor] = tentative_g
                 f_scores[neighbor] = tentative_g + neighbor.get_heuristic()
         
-        return None
-    
+        return None 
     def calculate_total_cost(self, start_node, goal_node):
         """Calculate total cost (f-score) from start to goal node"""
         path = self.find_path(start_node, goal_node)
