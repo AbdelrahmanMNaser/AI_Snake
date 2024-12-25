@@ -1,4 +1,4 @@
-from edge import Edge
+from src.algorithm.edge import Edge
 
 class Node:
     def __init__(self, x=0, y=0, heuristic=0):

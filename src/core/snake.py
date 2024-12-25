@@ -1,5 +1,4 @@
 import pygame
-from node import Node
 
 class Snake:
     def __init__(self, x, y, block_size):
